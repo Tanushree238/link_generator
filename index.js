@@ -1,10 +1,12 @@
 const express = require('express');
 const port = 3000
 const app = express();
-const router = require('./routes');
+const router = require('./routes/auth')
+const lg_router = require("./routes/link_generator")
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = new require('connect-mongo')(session); // npm install connect-mongo@3.1.2
+const fileUpload = require("express-fileupload")
 
 mongoose.connect('mongodb://localhost:27017/link_generator');
 
@@ -25,7 +27,12 @@ app.set('view engine', 'ejs')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(fileUpload());
+
+const path = __dirname 
+
 app.use('', router);
+app.use('', lg_router);
 
 db.on('open', ()=>{
     console.log("DB connected successfully");

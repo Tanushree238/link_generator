@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 router.get(['/', '/register'], (req, res) => {
+    if (req.session.userId){
+        res.redirect("/dashboard");
+    }
     res.render('home')
 })
 
@@ -26,7 +29,10 @@ router.post(['/', '/register'], (req, res) => {
                         console.log(err);
                     } else {
                         console.log("Success");
-                        res.send("Success");
+                        // Opt - 1 -> Login & redirect to dashboard 
+                        // Opt - 2 -> redirect to login
+                        req.session.userId = user._id.toString()
+                        res.redirect("\dashboard")
                     }
                 });
             });
@@ -37,6 +43,9 @@ router.post(['/', '/register'], (req, res) => {
 })
 
 router.get("/login", (req, res) => {
+    if (req.session.userId){
+        res.redirect("/dashboard");
+    }
     res.render("login")
 })
 
@@ -48,7 +57,8 @@ router.post("/login", (req, res) =>{
                 bcrypt.compare(data.password, user.password, (err, result) => {
                     if (result == true){
                         req.session.userId = user._id.toString()
-                        res.send({"Success": "Login successful!"})
+                        // res.send({"Success": "Login successful!"})
+                        res.redirect("\dashboard")
                     } else{
                         res.send({"Error": "Incorrect Password"})
                     }
@@ -61,5 +71,19 @@ router.post("/login", (req, res) =>{
         res.sendStatus(500)
     }
 })
+
+router.get("/logout", (req, res) => {
+    // session destory redirect to login
+    if (req.session){
+        req.session.destroy((err) => {
+            if (err){
+                res.send({"Error": err})
+            } else{
+                res.redirect("/login")
+            }
+        })
+    }
+})
+
 
 module.exports = router

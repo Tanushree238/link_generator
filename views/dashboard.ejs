@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator | Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js" integrity="sha512-rFun1mEMg3sNDcSjeGP35cLIycsS+og/QtN6WWnoSviHU9ykMLNQp7D1uuG1AzTV2w0VmyFVpszi2QJwiVW6oQ==" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/32ee507fe4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5 py-2">
+        <a class="navbar-brand" href="#">Link Generator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Welcome, <%= name %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <form class="d-flex justify-content-center py-4" action="/generate_link" method="POST" enctype="multipart/form-data">
+        <div class="col-md-4 form-inline">
+            <input type="file" class="form-control" name="resource" id="resource" accept="image/jpg,image/jpeg,image/png,application/pdf">
+            <button class="btn btn-success mx-2" type="submit">Generate link</button>
+        </div>
+    </form>
+    <div class="justify-content-center d-flex">
+        <table class="table text-center col-md-8">
+            <tr>
+                <th>Resource Name</th>
+                <th>Generated Link</th>
+                <th>Counts</th>
+            </tr>
+            <% for( var i=0; i< generated_links.length ; i++) {%>
+                <tr>
+                    <td><%= generated_links[i].resource %></td>
+                    <td><a href="/<%= generated_links[i].link %>" target="_blank"><p style="word-break: break-all;"><%= generated_links[i].link %></p></a></td>
+                    <td><%= generated_links[i].count %></td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+</body>
+</html>
