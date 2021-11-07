@@ -37,7 +37,7 @@ app.use('', lg_router);
 
 db.on('open', ()=>{
     console.log("DB connected successfully");
-    app.listen(port, () => {
+    app.listen( process.env.PORT || port, () => {
         console.log("Express app started on localhost:"+port);
     })
 })
