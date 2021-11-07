@@ -8,7 +8,8 @@ const session = require('express-session');
 const MongoStore = new require('connect-mongo')(session); // npm install connect-mongo@3.1.2
 const fileUpload = require("express-fileupload")
 
-mongoose.connect('mongodb://localhost:27017/link_generator');
+// mongoose.connect('mongodb://localhost:27017/link_generator'); // development
+mongoose.connect('mongodb+srv://admin:admin123@cluster0.kzjs2.mongodb.net/link_generat?retryWrites=true&w=majority'); // production
 
 const db = mongoose.connection;
 
